@@ -4,6 +4,7 @@ import br.com.alura.ScreenMusic.model.Artist;
 import br.com.alura.ScreenMusic.model.ArtistType;
 import br.com.alura.ScreenMusic.model.Musics;
 import br.com.alura.ScreenMusic.repository.ArtistRepository;
+import br.com.alura.ScreenMusic.service.ConsultGPT;
 import com.sun.source.tree.WhileLoopTree;
 
 import java.util.List;
@@ -81,13 +82,21 @@ public class mainScreenMusic {
 
     private void listMusic() {
         List<Artist> artistList = repository.findAll();
-        artistList.forEach(System.out::println);
+        artistList.forEach(a -> a.getMusics().forEach(System.out::println));
     }
 
     private void searchMusicByArtist() {
+        System.out.println("Enter the name of this artist: ");
+        var artist = scan.nextLine();
+        List<Musics> musics = repository.searchMusicByArtist(artist);
+        musics.forEach(System.out::println);
     }
 
     private void searchArtistData() {
+        System.out.println("Search data about which artist?");
+        var artist = scan.nextLine();
+        var response = ConsultGPT.getInformation(artist);
+        System.out.println(response.trim());
     }
 
     private void registerArtists() {
